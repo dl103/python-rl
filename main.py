@@ -5,16 +5,23 @@ from absl import flags
 def main():
     # Load environment
     env = Environment()
+    nn = Network()
 
     # Train
+    train(env)
 
-def train():
+# Main function to train the
+def train(env):
     print("Training")
     # Init single agent
 
-    # Perform action from network
+    for i in range(1000):
+        # Perform action from network
+        env.step(env.action_space().sample())
+        if env.is_complete():
+            env.reset()
 
-    # Update network/collect rewards
+        # Update network/collect rewards
 
 if __name__ == "__main__":
     flags.FLAGS(sys.argv)
