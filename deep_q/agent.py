@@ -14,4 +14,4 @@ class Agent:
             return self.env.action_space().sample()
         else:
             print("Selecting network action")
-            return self.network.get_action(self.env.observation)
+            return self.network.max_output(self.env.observation)

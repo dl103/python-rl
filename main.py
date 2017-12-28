@@ -1,5 +1,7 @@
 import sys
 import pdb
+import numpy as np
+
 from common.environment import Environment
 from deep_q.network import Network
 from deep_q.agent import Agent
@@ -21,16 +23,34 @@ def train(env, nn):
     print("Training")
     # Init single agent
     agent = Agent(env, nn, 0.01)
+    current_state = env.observation
+    current_action = None
+    gamma = 0.9
 
-    for i in range(1000):
+    while True:
         # Perform action from network
-        env.step(agent.get_action())
+        prev_state = current_state
+        prev_action = current_action
+        current_action = agent.get_action()
+        env.step(current_action)
+        current_state = env.observation
+        reward = env.reward
 
         # Update network/collect rewards
+        if env.is_complete():
+            target = reward + gamma * nn.max_output(current_state)
+        else:
+            target = reward
+
+        loss_vector = np.subtract(target, nn.predict(prev_state))
+        # TODO: is this the wrong state?
+        nn.update(prev_state, loss_vector)
 
         # Reset if complete
         if env.is_complete():
             env.reset()
+            current_state = env.observation
+            current_action = None
 
 if __name__ == "__main__":
     flags.FLAGS(sys.argv)
