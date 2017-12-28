@@ -1,6 +1,6 @@
 import sys
 import pdb
-from a3c.environment import Environment
+from common.environment import Environment
 from a3c.network import Network
 from absl import flags
 

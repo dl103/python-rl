@@ -18,3 +18,5 @@ class Network:
         model.add(Dense(output_dimension, activation='linear'))
         model.compile(loss='mse', optimizer=Adam(lr = learning_rate))
         return model
+
+    def update
