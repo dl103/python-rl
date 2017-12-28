@@ -10,8 +10,6 @@ class Agent:
     # Gets the action given the current state. Includes epsilon exploring.
     def get_action(self):
         if np.random.rand() <= self.epsilon:
-            print("Act randomly")
             return self.env.action_space().sample()
         else:
-            print("Selecting network action")
             return self.network.max_output(self.env.observation)

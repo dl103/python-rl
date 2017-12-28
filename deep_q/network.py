@@ -25,7 +25,7 @@ class Network:
         return np.argmax(action_values[0])
 
     def predict(self, input_state):
-        return self.model.predict(input_state)
+        return self.model.predict(input_state, verbose=0)
 
     def update(self, input_state, target):
-        self.model.fit(input_state, target)
+        self.model.fit(input_state, target, verbose=0)
