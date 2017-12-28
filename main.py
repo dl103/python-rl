@@ -1,11 +1,14 @@
 import sys
+import pdb
 from a3c.environment import Environment
+from a3c.network import Network
 from absl import flags
 
 def main():
     # Load environment
     env = Environment()
-    nn = Network()
+    # Input size, output size
+    nn = Network(env.observation_space().shape[0], env.action_space().n, 0.001)
 
     # Train
     train(env)

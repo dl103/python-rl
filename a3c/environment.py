@@ -25,6 +25,9 @@ class Environment:
     def action_space(self):
         return self.env.action_space
 
+    def observation_space(self):
+        return self.env.observation_space
+
     def is_complete(self):
         return self.complete
 
