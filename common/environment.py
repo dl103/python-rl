@@ -1,5 +1,6 @@
 #  from pysc2.env import environment
 from pysc2.env import sc2_env
+import numpy as np
 import pdb
 
 # OpenAI gym
@@ -15,11 +16,15 @@ class Environment:
                 #  visualize=True
             #  )
         self.env = gym.make('CartPole-v0')
-        self.env.reset()
+        self.observation = np.reshape(self.env.reset(), [1,4])
+        self.reward = 0
+        self.complete = False
+        self.info = None
         print("Init environment")
 
     def step(self, action):
-        self.obs, self.reward, self.complete, self.info = self.env.step(action)
+        self.observation, self.reward, self.complete, self.info = self.env.step(action)
+        self.observation = np.reshape(self.observation, [1,4])
         self.env.render()
 
     def action_space(self):
