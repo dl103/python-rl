@@ -1,15 +1,20 @@
 import sys
-import pdb
-import numpy as np
 
-from common.environment import Environment
+from environments.openai_environment import OpenAIEnvironment
 from deep_q.network import Network
 from deep_q.agent import Agent
+
 from absl import flags
 
 def main():
+    """Main hook for running the module.
+
+    Since this is really just a package to be included in other applications, I
+    imagine this won't stay around for long.
+    """
     # Load environment
-    env = Environment()
+    env = OpenAIEnvironment()
+
     # Input size, output size
     nn = Network(env.observation_space().shape[0], env.action_space().n, 0.001)
 
@@ -29,6 +34,7 @@ def train(env, nn):
     score = 0
     scores = []
 
+    # TODO: refactor this ish
     while True:
         # Perform action from network
         current_state = env.observation
