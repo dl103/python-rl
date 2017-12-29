@@ -31,30 +31,29 @@ def train(env, nn):
 
     while True:
         # Perform action from network
-        prev_state = current_state
-        prev_action = current_action
+        current_state = env.observation
         current_action = agent.get_action()
         env.step(current_action)
-        current_state = env.observation
+        next_state = env.observation
         reward = env.reward
 
         # Update network/collect rewards
         if env.is_complete():
             target = reward
         else:
-            target = reward + gamma * nn.max_output(current_state)
+            target = reward + gamma * nn.max_output(next_state)
 
-        # target is the reward + q value of best action
-
-        prev_state_vector = nn.predict(prev_state)
-        prev_state[0][prev_action] = target
-        nn.update(prev_state, prev_state_vector)
+        # Take the entire action vector of the "current_state" and update the
+        # action that we took to the target reward. This way, all actions that
+        # we didn't take will have an error of 0 when we subtract out the Q
+        # estimation.
+        current_state_vector = nn.predict(current_state)
+        current_state_vector[0][current_action] = target
+        nn.update(current_state, current_state_vector)
 
         # Reset if complete
         if env.is_complete():
             env.reset()
-            current_state = env.observation
-            current_action = None
             scores.append(score)
             if len(scores) % 50 == 0:
                 print("Score Average: " + str(sum(scores)/len(scores)))

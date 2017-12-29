@@ -25,7 +25,7 @@ class Environment:
     def step(self, action):
         self.observation, self.reward, self.complete, self.info = self.env.step(action)
         self.observation = np.reshape(self.observation, [1,4])
-        #  self.env.render()
+        self.env.render()
 
     def action_space(self):
         return self.env.action_space
