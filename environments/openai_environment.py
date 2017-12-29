@@ -6,7 +6,7 @@ import numpy as np
 class OpenAIEnvironment(BaseEnvironment):
     def __init__(self, render = False):
         self.env = gym.make('CartPole-v0')
-        self.observation = np.reshape(self.env.reset(), [1,4])
+        self.observation = np.reshape(self.env.reset(), self.observation_dimensions)
         self.reward = 0
         self.complete = False
         self.info = None
@@ -14,7 +14,7 @@ class OpenAIEnvironment(BaseEnvironment):
 
     def step(self, action):
         self.observation, self.reward, self.complete, self.info = self.env.step(action)
-        self.observation = np.reshape(self.observation, [1,4])
+        self.observation = np.reshape(self.observation, self.observation_dimensions)
         if self.render:
             self.env.render()
 
