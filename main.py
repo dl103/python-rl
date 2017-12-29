@@ -26,6 +26,8 @@ def train(env, nn):
     current_state = env.observation
     current_action = None
     gamma = 0.9
+    score = 0
+    scores = []
 
     while True:
         # Perform action from network
@@ -51,6 +53,12 @@ def train(env, nn):
             env.reset()
             current_state = env.observation
             current_action = None
+            scores.append(score)
+            if len(scores) % 50 == 0:
+                print("Score Average: " + str(sum(scores)/len(scores)))
+                scores = []
+            score = 0
+        score += 1
 
 if __name__ == "__main__":
     flags.FLAGS(sys.argv)
