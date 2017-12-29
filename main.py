@@ -1,3 +1,4 @@
+import numpy as np
 import sys
 
 from environments.openai_environment import OpenAIEnvironment
@@ -16,7 +17,9 @@ def main():
     env = OpenAIEnvironment()
 
     # Input size, output size
-    nn = Network(env.observation_space().shape[0], env.action_space().n, 0.001)
+    input_node_count = np.prod(env.observation_dimensions)
+    output_node_count = env.num_actions()
+    nn = Network(input_node_count, output_node_count, 0.001)
 
     # Train
     train(env, nn)

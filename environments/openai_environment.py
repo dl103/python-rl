@@ -15,13 +15,18 @@ class OpenAIEnvironment(BaseEnvironment):
     def step(self, action):
         self.observation, self.reward, self.complete, self.info = self.env.step(action)
         self.observation = np.reshape(self.observation, [1,4])
-        self.env.render() if self.render:
+        if self.render:
+            self.env.render()
 
-    def action_space(self):
-        return self.env.action_space
+    def num_actions(self):
+        return self.env.action_space.n
 
-    def observation_space(self):
-        return self.env.observation_space
+    def random_action(self):
+        return self.env.action_space.sample()
+
+    @property
+    def observation_dimensions(self):
+        return np.array([1, self.env.observation_space.shape[0]])
 
     def is_complete(self):
         return self.complete

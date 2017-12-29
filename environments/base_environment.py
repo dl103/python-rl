@@ -13,11 +13,19 @@ class BaseEnvironment(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def action_space(self):
+    def num_actions(self):
         pass
 
     @abc.abstractmethod
-    def observation_space(self):
+    def random_action(self):
+        pass
+
+    @property
+    @abc.abstractmethod
+    def observation_dimensions(self):
+        """
+        Returns a tuple of (row, col) corresponding to the observations dimensions.
+        """
         pass
 
     @abc.abstractmethod

@@ -3,7 +3,6 @@ from keras.layers import Dense
 from keras.optimizers import Adam
 
 import numpy as np
-import pdb
 
 class Network:
     def __init__(self, input_dimension, output_dimension, learning_rate):

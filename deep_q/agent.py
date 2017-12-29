@@ -2,7 +2,6 @@ import numpy as np
 
 class Agent:
     def __init__(self, env, network, epsilon):
-        print("init agent")
         self.env = env
         self.network = network
         self.epsilon = epsilon
@@ -10,6 +9,6 @@ class Agent:
     # Gets the action given the current state. Includes epsilon exploring.
     def get_action(self):
         if np.random.rand() <= self.epsilon:
-            return self.env.action_space().sample()
+            return self.env.random_action()
         else:
             return self.network.best_action(self.env.observation)
