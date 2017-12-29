@@ -14,7 +14,7 @@ def main():
     imagine this won't stay around for long.
     """
     # Load environment
-    env = OpenAIEnvironment()
+    env = OpenAIEnvironment('CartPole-v0')
 
     # Input size, output size
     input_node_count = np.prod(env.observation_dimensions)

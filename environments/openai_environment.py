@@ -4,8 +4,8 @@ import gym
 import numpy as np
 
 class OpenAIEnvironment(BaseEnvironment):
-    def __init__(self, render = False):
-        self.env = gym.make('CartPole-v0')
+    def __init__(self, env_identifier, render = False):
+        self.env = gym.make(env_identifier)
         self.observation = np.reshape(self.env.reset(), self.observation_dimensions)
         self.reward = 0
         self.complete = False
