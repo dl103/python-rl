@@ -12,4 +12,4 @@ class Agent:
         if np.random.rand() <= self.epsilon:
             return self.env.action_space().sample()
         else:
-            return self.network.max_output(self.env.observation)
+            return self.network.best_action(self.env.observation)

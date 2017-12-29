@@ -25,7 +25,7 @@ def train(env, nn):
     agent = Agent(env, nn, 0.01)
     current_state = env.observation
     current_action = None
-    gamma = 0.9
+    gamma = 0.95
     score = 0
     scores = []
 
@@ -40,13 +40,15 @@ def train(env, nn):
 
         # Update network/collect rewards
         if env.is_complete():
-            target = reward + gamma * nn.max_output(current_state)
-        else:
             target = reward
+        else:
+            target = reward + gamma * nn.max_output(current_state)
 
-        loss_vector = np.subtract(target, nn.predict(prev_state))
-        # TODO: is this the wrong state?
-        nn.update(prev_state, loss_vector)
+        # target is the reward + q value of best action
+
+        prev_state_vector = nn.predict(prev_state)
+        prev_state[0][prev_action] = target
+        nn.update(prev_state, prev_state_vector)
 
         # Reset if complete
         if env.is_complete():
