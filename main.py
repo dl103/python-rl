@@ -16,7 +16,8 @@ def main():
             epsilon = 0.01,
             num_actions = env.num_actions(),
             observation_dim=env.observation_dimensions,
-            learning_rate = 0.001)
+            learning_rate = 0.001,
+            buffer_capacity = 2000)
     # Train
     train(env, algorithm)
 
