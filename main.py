@@ -17,7 +17,8 @@ def main():
             num_actions = env.num_actions(),
             observation_dim=env.observation_dimensions,
             learning_rate = 0.001,
-            buffer_capacity = 2000)
+            buffer_capacity = 2000,
+            batch_size = 32)
     # Train
     train(env, algorithm)
 

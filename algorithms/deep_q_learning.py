@@ -4,30 +4,44 @@ from networks.network import Network
 
 class DeepQLearning:
     """Deep Q Learning algorithm and all related components"""
-    # TODO: refactor out epsilon
-    # TODO: consider tradeoffs between configuration vs convenience in setting
-    #       the input and output size of the network
     def __init__(self, gamma, epsilon, num_actions, observation_dim,
-            learning_rate, buffer_capacity):
+            learning_rate, buffer_capacity, batch_size):
         self.gamma = gamma
         self.epsilon = epsilon
         self.num_actions = num_actions
         self.observation_dim = observation_dim
         self.buffer_capacity = buffer_capacity
+        self.replay_memory = []
+        self.batch_size = batch_size
 
         self.network = self.__build_network(learning_rate)
 
     def act(self, env):
-        # TODO: implement replay buffer
-        # Perform action from network
         current_state = env.observation
         current_action = self.__get_action(current_state)
         env.step(current_action)
         next_state = env.observation
         reward = env.reward
 
-        self.__update_network(current_state, current_action, reward, next_state,
-                env.is_complete())
+        self.__store_experience(current_state, current_action, reward,
+                next_state, env.is_complete())
+
+        self.__update_network_from_experiences()
+
+    def __store_experience(self, current_state, current_action, reward, next_state, is_complete):
+        self.replay_memory.append((current_state, current_action, reward, next_state, is_complete))
+
+        while len(self.replay_memory) > self.buffer_capacity:
+            self.replay_memory.pop(0)
+
+    def __update_network_from_experiences(self):
+        for _ in range(self.batch_size):
+            random_index = np.random.randint(len(self.replay_memory))
+            experience = self.replay_memory[random_index]
+            current_state, current_action, reward, next_state, is_complete = experience
+
+            self.__update_network(current_state, current_action, reward,
+                    next_state, is_complete)
 
     def __update_network(self, current_state, current_action, reward, next_state, is_complete):
         """Update network based on states, actions, and rewards"""
