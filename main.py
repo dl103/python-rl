@@ -8,32 +8,21 @@ from deep_q.agent import Agent
 from absl import flags
 
 def main():
-    """Main hook for running the module.
-
-    Since this is really just a package to be included in other applications, I
-    imagine this won't stay around for long.
-    """
+    """Cartpole example"""
     # Load environment
     env = OpenAIEnvironment('CartPole-v0')
 
-    # Input size, output size
-    input_node_count = np.prod(env.observation_dimensions)
-    output_node_count = env.num_actions()
-    nn = Network(input_node_count, output_node_count, 0.001)
-
+    algorithm = DeepQLearning(gamma = 0.95, epsilon = 0.01)
     # Train
-    train(env, nn)
+    train(env, algorithm)
 
 # Main function to train the
 # env - OpenAI Gym Environment
-# nn - Network
-def train(env, nn):
+def train(env, algorithm):
     print("Training")
     # Init single agent
-    agent = Agent(env, nn, 0.01)
     current_state = env.observation
     current_action = None
-    gamma = 0.95
     score = 0
     scores = []
 
@@ -41,7 +30,7 @@ def train(env, nn):
     while True:
         # Perform action from network
         current_state = env.observation
-        current_action = agent.get_action()
+        current_action = algorithm.get_action(current_state)
         env.step(current_action)
         next_state = env.observation
         reward = env.reward
