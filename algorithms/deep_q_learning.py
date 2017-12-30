@@ -16,6 +16,7 @@ class DeepQLearning:
         self.network = self.__build_network(learning_rate)
 
     def act(self, env):
+        # TODO: implement replay buffer
         # Perform action from network
         current_state = env.observation
         current_action = self.__get_action(current_state)

@@ -9,12 +9,12 @@ class OpenAIEnvironment(BaseEnvironment):
         self.observation = np.reshape(self.env.reset(), self.observation_dimensions)
         self.reward = 0
         self.complete = False
-        self.info = None
         self.render = render
 
     def step(self, action):
-        self.observation, self.reward, self.complete, self.info = self.env.step(action)
+        self.observation, self.reward, self.complete, _ = self.env.step(action)
         self.observation = np.reshape(self.observation, self.observation_dimensions)
+
         if self.render:
             self.env.render()
 
