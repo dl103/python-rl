@@ -12,7 +12,11 @@ def main():
     # Load environment
     env = OpenAIEnvironment('CartPole-v0')
 
-    algorithm = DeepQLearning(gamma = 0.95, epsilon = 0.01, num_actions = env.num_actions(), observation_dim=env.observation_dimensions)
+    algorithm = DeepQLearning(gamma = 0.95,
+            epsilon = 0.01,
+            num_actions = env.num_actions(),
+            observation_dim=env.observation_dimensions,
+            learning_rate = 0.001)
     # Train
     train(env, algorithm)
 

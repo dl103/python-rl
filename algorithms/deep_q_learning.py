@@ -1,16 +1,19 @@
 import numpy as np
 
-from deep_q.network import Network
+from networks.network import Network
 
 class DeepQLearning:
     """Deep Q Learning algorithm and all related components"""
-    # Can refactor out epsilon later
-    def __init__(self, gamma, epsilon, num_actions, observation_dim):
+    # TODO: refactor out epsilon
+    # TODO: consider tradeoffs between configuration vs convenience in setting
+    #       the input and output size of the network
+    def __init__(self, gamma, epsilon, num_actions, observation_dim, learning_rate):
         self.gamma = gamma
         self.epsilon = epsilon
         self.num_actions = num_actions
         self.observation_dim = observation_dim
-        self.network = self.__build_network()
+
+        self.network = self.__build_network(learning_rate)
 
     def act(self, env):
         # Perform action from network
@@ -35,15 +38,18 @@ class DeepQLearning:
         self.network.update(current_state, current_state_vector)
 
     def __get_action(self, input_observation):
-        if np.random.rand() <= self.epsilon:
+        if self.__should_explore():
             return self.__random_action()
         else:
             return self.network.best_action(input_observation)
 
+    def __should_explore(self):
+        return np.random.rand() <= self.epsilon
+
     def __build_network(self):
         input_node_count = np.prod(self.observation_dim)
         output_node_count = self.num_actions
-        return Network(input_node_count, output_node_count, 0.001)
+        return Network(input_node_count, output_node_count, self.learning_rate)
 
     def __random_action(self):
         return np.random.randint(self.num_actions)
