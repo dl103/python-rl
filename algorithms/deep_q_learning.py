@@ -3,7 +3,11 @@ import numpy as np
 from networks.network import Network
 
 class DeepQLearning:
-    """Deep Q Learning algorithm and all related components"""
+    """Deep Q Learning algorithm and all related components.
+
+    This implementation is based off of the paper `Playing Atari with Deep
+    Reinforcement Learning` by Mnih et al (https://arxiv.org/pdf/1312.5602.pdf)
+    """
     def __init__(self, gamma, epsilon, num_actions, observation_dim,
             learning_rate, buffer_capacity, batch_size):
         self.gamma = gamma
