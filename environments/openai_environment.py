@@ -6,14 +6,13 @@ import numpy as np
 class OpenAIEnvironment(BaseEnvironment):
     def __init__(self, env_identifier, render = False):
         self.env = gym.make(env_identifier)
-        self.observation = np.reshape(self.env.reset(), self.observation_dimensions)
+        self.observation = self.env.reset()
         self.reward = 0
         self.complete = False
         self.render = render
 
     def step(self, action):
         self.observation, self.reward, self.complete, _ = self.env.step(action)
-        self.observation = np.reshape(self.observation, self.observation_dimensions)
 
         if self.render:
             self.env.render()
@@ -26,7 +25,7 @@ class OpenAIEnvironment(BaseEnvironment):
 
     @property
     def observation_dimensions(self):
-        return np.array([1, self.env.observation_space.shape[0]])
+        return self.env.observation_space.shape[0]
 
     def is_complete(self):
         return self.complete
