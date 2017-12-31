@@ -4,7 +4,6 @@ from keras.layers import Flatten
 from keras.optimizers import Adam
 
 import numpy as np
-import pdb
 
 class Network:
     def __init__(self, input_dimension, output_dimension, learning_rate):
@@ -39,9 +38,7 @@ class Network:
 
     # Update the weights based on the input_state and the target vector
     def update(self, input_state, target):
-        pdb.set_trace()
-        input_as_matrix = np.reshape(input_state, (-1, input_state.shape[0]))
-        self.model.fit(input_as_matrix, target, verbose=0)
+        self.model.fit(input_state, target, verbose=0)
 
     def batch_update(self, input_states, targets):
         self.model.train_on_batch(np.array(input_states), np.array(targets))

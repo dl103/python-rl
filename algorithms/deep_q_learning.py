@@ -1,7 +1,6 @@
 import numpy as np
 
 from networks.network import Network
-import pdb
 
 class DeepQLearning:
     """Deep Q Learning algorithm and all related components"""
@@ -35,11 +34,10 @@ class DeepQLearning:
         while len(self.replay_memory) > self.buffer_capacity:
             self.replay_memory.pop(0)
 
-    # TODO: Batch these updates
     def __update_network_from_experiences(self):
         # TODO: don't hardcode this dimension
         random_experience_states = np.empty((0, 4))
-        target_vectors = np.empty((0, 4))
+        target_vectors = np.empty((0, 2))
         for _ in range(self.batch_size):
             random_index = np.random.randint(len(self.replay_memory))
             experience = self.replay_memory[random_index]
@@ -53,8 +51,8 @@ class DeepQLearning:
             current_state_vector = self.network.predict(current_state)
             current_state_vector[0][current_action] = target
 
-            random_experience_states = np.append(random_experience_states, np.array(current_state), axis=0)
-            target_vectors = np.append(target_vectors, np.array(current_state_vector), axis=0)
+            random_experience_states = np.concatenate((random_experience_states, np.reshape(current_state, (-1, current_state.size))), axis=0)
+            target_vectors = np.concatenate((target_vectors, np.reshape(current_state_vector, (-1, current_state_vector.size))), axis=0)
         self.network.update(random_experience_states, target_vectors)
 
     def __update_network(self, current_state, current_action, reward, next_state, is_complete):
