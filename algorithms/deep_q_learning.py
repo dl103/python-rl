@@ -35,9 +35,8 @@ class DeepQLearning:
             self.replay_memory.pop(0)
 
     def __update_network_from_experiences(self):
-        # TODO: don't hardcode this dimension
-        random_experience_states = np.empty((0, 4))
-        target_vectors = np.empty((0, 2))
+        random_experience_states = []
+        target_vectors = []
         for _ in range(self.batch_size):
             random_index = np.random.randint(len(self.replay_memory))
             experience = self.replay_memory[random_index]
@@ -49,11 +48,11 @@ class DeepQLearning:
             # we didn't take will have an error of 0 when we subtract out the Q
             # estimation.
             current_state_vector = self.network.predict(current_state)
-            current_state_vector[0][current_action] = target
+            current_state_vector[current_action] = target
 
-            random_experience_states = np.concatenate((random_experience_states, np.reshape(current_state, (-1, current_state.size))), axis=0)
-            target_vectors = np.concatenate((target_vectors, np.reshape(current_state_vector, (-1, current_state_vector.size))), axis=0)
-        self.network.update(random_experience_states, target_vectors)
+            random_experience_states.append(current_state)
+            target_vectors.append(current_state_vector)
+        self.network.update(np.array(random_experience_states), np.array(target_vectors))
 
     def __update_network(self, current_state, current_action, reward, next_state, is_complete):
         """Update network based on states, actions, and rewards"""

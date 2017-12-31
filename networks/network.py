@@ -24,17 +24,17 @@ class Network:
     # Returns the highest output value of the network
     def max_output(self, input_state):
         action_values = self.predict(input_state)
-        return np.amax(action_values[0])
+        return np.amax(action_values)
 
     # Returns the index of the action with the highest value
     def best_action(self, input_state):
         action_values = self.predict(input_state)
-        return np.argmax(action_values[0])
+        return np.argmax(action_values)
 
     # Predicts the Q values for each action given the state
     def predict(self, input_state):
         input_as_matrix = np.reshape(input_state, (-1, input_state.size))
-        return self.model.predict(input_as_matrix, verbose=0)
+        return np.squeeze(self.model.predict(input_as_matrix, verbose=0))
 
     # Update the weights based on the input_state and the target vector
     def update(self, input_state, target):
